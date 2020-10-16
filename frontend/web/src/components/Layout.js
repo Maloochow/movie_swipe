@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client'
 
-const socket = io('http://localhost:4000')
+// const socket = io('http://localhost:4000')
 
 export default class Layout extends Component {
     state = {
@@ -9,11 +9,11 @@ export default class Layout extends Component {
     }
 
     renderConnect = () => {
-        socket.on('hello', (counter) => {
-            this.setState({
-                messages: `hello - ${counter}`
-            })
-        })
+        // socket.on('hello', (counter) => {
+        //     this.setState({
+        //         messages: `hello - ${counter}`
+        //     })
+        // })
     return <li>{this.state.messages}</li>
     }
 

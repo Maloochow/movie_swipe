@@ -1,4 +1,6 @@
-class UserController < ApplicationController
+require 'pry'
+
+class UsersController < ApplicationController
     def index
         @users = User.all
         if @users
@@ -6,8 +8,9 @@ class UserController < ApplicationController
         else
             render json: {
                 status: 500,
-                errors: ['no users found']
+                errors: 'no users found'
             }
+        end
     end
 
     def show
@@ -17,8 +20,9 @@ class UserController < ApplicationController
         else
             render json: {
                 status: 500,
-                errors: ['no users found']
+                errors: 'no users found'
             }
+        end
     end
 
     def create
@@ -26,7 +30,7 @@ class UserController < ApplicationController
         if @user.save
             login!
             render json: {
-                status: :created,
+                logged_in: true,
                 user: @user
             }
         else
@@ -40,7 +44,7 @@ class UserController < ApplicationController
     private
 
     def user_params
-        params.require(:user).permit(:username, :password, :password_confirmation)
+        params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 
 

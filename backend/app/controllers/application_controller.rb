@@ -19,10 +19,6 @@ class ApplicationController < ActionController::Base
         @user == current_user
     end
 
-    def logout!
-        session.clear
-    end
-
     def set_user
         @user = User.find_by(id: session[:user_id])
     end

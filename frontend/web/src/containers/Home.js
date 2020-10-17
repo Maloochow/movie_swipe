@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import { userLogOut } from "../actions/userActions";
+import GetRoom from './GetRoom';
 
 const Home = (props) => {
 
     const [ loading, setLoading ] = useState(props.user.loading)
     const [ username, setUsername ] = useState(props.user.username)
+    const [ client ] = useState(props.client)
 
     useEffect(() => {
         console.log(props)
-        setLoading(props.user.loading)
-        setUsername(props.user.username)
     }, [props.user])
 
     const handleLogOut = (e) => {
@@ -34,6 +34,7 @@ const Home = (props) => {
             <div>
                 <h3>Welcome {username}</h3>
                 <button onClick={handleLogOut}>Log Out</button>
+                <GetRoom client={client}/>
             </div>
             )
         }

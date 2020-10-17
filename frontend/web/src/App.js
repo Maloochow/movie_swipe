@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import axios from 'axios'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Layout from './components/Layout'
 import { isLoggedIn, userLogin, userLogOut, userSignUp } from './actions/userActions'
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import SignUp from "./containers/SignUp";
+import socket from './actions/SocketClient'
 
 class App extends Component {
-
   componentDidMount() {
     this.props.isLoggedIn()
   }
@@ -19,13 +17,12 @@ class App extends Component {
       <div>
         <Router>
           <Switch>
-            <Route exact path='/' component={ Home } />
+            <Route exact path='/' render={props => <Home {...props} client={socket()}/> } />
             <Route exact path='/login' render={props => <Login {...props} {...this.props} />} />
             <Route exact path='/signup' render={props => <SignUp {...props} {...this.props} />} />
           </Switch>
         </Router>
 
-        <Layout title="Movie Swipe Card"/>
       </div>
     );
   }

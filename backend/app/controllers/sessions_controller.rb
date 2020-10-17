@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
     end
 
     def is_logged_in?
+        binding.pry
         if logged_in? && current_user
             render json: {
                 logged_in: true,
@@ -32,13 +33,16 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        reset_session
+        session.clear
+        cookies.clear
+        binding.pry
         if !logged_in?
             render json: {
                 status: 200,
                 logged_out: true
             }
         else
+            binding.pry
             render json: {
             status: 200,
             logged_out: false

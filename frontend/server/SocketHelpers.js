@@ -52,7 +52,7 @@ module.exports = function(client, clientManager, roomManager) {
         roomManager.removeClient(client)
     }
 
-    return (
+    return [
         handleRegister,
         handleJoin,
         handleLeave,
@@ -60,7 +60,7 @@ module.exports = function(client, clientManager, roomManager) {
         handleGetRooms,
         handleVote,
         handleDisconnect
-    )
+    ]
 
 }
 

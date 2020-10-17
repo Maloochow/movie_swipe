@@ -7,7 +7,8 @@ const RoomManager = require('./RoomManager')
 
 
 io.on('connection', client => {
-  const {
+  console.log('client connected...', client.id)
+  const [
     handleRegister,
     handleJoin,
     handleLeave,
@@ -15,7 +16,7 @@ io.on('connection', client => {
     handleGetRooms,
     handleVote,
     handleDisconnect
-  } = makeHandlers(client, ClientManager(), RoomManager())
+  ] = makeHandlers(client, ClientManager(), RoomManager())
 
   client.on('register', handleRegister)
 
@@ -40,7 +41,7 @@ io.on('connection', client => {
   })
 })
 
-// app.get('/', (req, res) => {
+// http.get('/', (req, res) => {
 //   res.send('<h1>Hello world</h1>');
 // });
 

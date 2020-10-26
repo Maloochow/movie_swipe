@@ -11,9 +11,11 @@ const MovieForm = (props) => {
 
     return (
         <form onSubmit={handleMovieSubmit}>
-            <label htmlFor="movie">Enter Your Movie Title:</label>
-            <input type="text" name="movie" onChange={e => setMovie(e.target.value)} value={movie} />
-            <button type="submit" disabled={movie === ""}>Submit</button>
+            <div class="form-group">
+            <label for="movie">Enter Movie Title</label>
+            <input type="text" class="form-control" id="movie" onChange={e => setMovie(e.target.value)} value={movie} />
+            </div>
+            <button type="submit" disabled={movie === ""} class="btn btn-primary">Submit</button>
         </form>
     )
 }

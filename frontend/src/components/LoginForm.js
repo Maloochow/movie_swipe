@@ -27,11 +27,17 @@ const LoginForm = (props) => {
         if(props.onSignUp) {
             return (
                 <div>
-                <label htmlFor="username">Username:</label>
-                <input type="text" name="username" id="username" value={ username } onChange={ e => setusername(e.target.value)} />
+                    <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" value={ username } onChange={ e => setusername(e.target.value)}/>
+                    </div>
+                
                 {onLogIn()}
-                <label htmlFor="password_confirmation">Password Confirmation:</label>
-                <input type="password" name="password_confirmation" id="password_confirmation" value={ password_confirmation } onChange={ e => setpassword_confirmation(e.target.value)} />
+
+                    <div class="form-group">
+                    <label for="password_confirmation">Password Confirmation</label>
+                    <input type="password" class="form-control" id="password_confirmation" value={ password_confirmation } onChange={ e => setpassword_confirmation(e.target.value)} />
+                    </div>
                 </div>
             )
         } else {
@@ -42,10 +48,16 @@ const LoginForm = (props) => {
     const onLogIn = () => {
         return (
             <div>
-            <label htmlFor="email">Email:</label>
-            <input type="text" name="email" id="email" value={ email } onChange={ e => setemail(e.target.value)} />
-            <label htmlFor="password">Password:</label>
-            <input type="password" name="password" id="password" value={ password } onChange={ e => setpassword(e.target.value)} />
+                <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" value={ email } onChange={ e => setemail(e.target.value)}/>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+
+                <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" value={ password } onChange={ e => setpassword(e.target.value)}/>
+                </div>
             </div>
         )
     }
@@ -54,7 +66,7 @@ const LoginForm = (props) => {
         <form onSubmit={handleSubmit}>
             <div>{props.errors ? props.errors : null}</div>
             {onSignUp()}
-            <input type="submit" value={ props.onSignUp? "Signup" : "Login"} />
+            <button type="submit" class="btn btn-primary">{ props.onSignUp? "Signup" : "Login"}</button>
         </form>
     )
     

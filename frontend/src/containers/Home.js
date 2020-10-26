@@ -6,6 +6,7 @@ import { addRoomHistory } from '../actions/roomActions'
 import GetRoom from './GetRoom';
 import Layout from '../components/Layout'
 import Login from './Login'
+import Loading from '../components/Loading';
 
 const Home = (props) => {
 
@@ -18,21 +19,29 @@ const Home = (props) => {
         console.log(props)
         setUsername(props.user.username)
         setLoading(props.user.loading)
-        if (username !== "") {
+    }, [props.user.username ])
+
+    const isUsername = () => {
+        if (username === "") {
+            return false
+        } else {
             client.register(username, (err, user) => {
                 console.log(`errors: ${err}`)
                 console.log(user)
             })
+            return true
         }
-    }, [props.user.username ])
+    }
 
     return (
-    <div>
-        { loading ? <div>Loading...</div> : null}
-        { username === "" ? <Login {...props}/> : null }
-        { username !== "" ? <div><Layout handleLogOut={props.userLogOut} username={username}/></div> : null}
-        <GetRoom client={client} history={history} rooms={props.room.rooms} addRooms={props.addRooms} getRooms={props.getRooms} addRoomHistory={props.addRoomHistory} addEvents={props.addEvents}/>
-    </div>
+        <div>
+            { isUsername() ? <div><Layout handleLogOut={props.userLogOut} username={username}/></div> : null}
+            <div className="container">
+            { loading ? <Loading /> : null}
+            { isUsername() ? null : <Login {...props}/> }
+            <GetRoom client={client} history={history} rooms={props.room.rooms} addRooms={props.addRooms} getRooms={props.getRooms} addRoomHistory={props.addRoomHistory} addEvents={props.addEvents} isUsername={isUsername}/>
+            </div>
+        </div>
     )
 
 }

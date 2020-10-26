@@ -4,17 +4,24 @@ const DisplayRooms = ({rooms, handleClick}) => {
     const renderRooms = () => {
     return rooms.map((room) => {
         return (
-            <li key={room.name}><p>{room.name}: current has {room.numMembers} members</p>
-            <button onClick={handleClick} id={room.name}>Join</button>
+            <li class="list-group-item d-flex justify-content-between align-items-center" key={room.name}>
+                {room.name}
+                <span class="badge badge-primary badge-pill">{room.numMembers}</span>
+                <button type="button" class="btn btn-primary" onClick={handleClick} id={room.name}>Join</button>
             </li>
         )
         })
     }
 
     return (
-        <ul>
+        <div>
+        <div class="card-body">
+            <h5 class="card-title">Current Rooms:</h5>
+        </div>
+        <ul class="list-group">
             {renderRooms()}
         </ul>
+        </div>
         )
 
 }

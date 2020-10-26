@@ -49,11 +49,24 @@ export default class GetRoom extends Component {
         })
     }
 
+    show = () => {
+        if (this.props.isUsername()) {
+            return (
+                <div class="card" style={{marginTop: "20px"}}>
+                    <DisplayRooms rooms={this.props.rooms} handleClick={this.handleJoin}/>
+                    <div class="card-body">
+                    <button type="button" class="btn btn-primary" onClick={this.handleClick}>Create New Room</button>
+                    </div>
+                </div>
+            )
+
+        }
+    }
+
     render() {
         return (
             <div>
-                <button onClick={this.handleClick}>Crate New Room</button>
-                <DisplayRooms rooms={this.props.rooms} handleClick={this.handleJoin}/>
+                {this.show()}
             </div>
         )
     }

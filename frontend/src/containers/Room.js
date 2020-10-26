@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import DisplayMovies from '../components/DisplayMovies'
 import Layout from '../components/Layout'
 import MovieForm from '../components/MovieForm'
+import RoomEvents from '../components/RoomEvents'
 import MovieSwipe from './MovieSwipe'
 
 export default class Room extends Component {
@@ -17,16 +18,6 @@ export default class Room extends Component {
         events: this.props.room.pastEvents,
         start: false,
         ready: false
-    }
-
-    listMembers = () => {
-       return this.state.members.map( member => <li>{member.username}</li>)
-    }
-    eventHistory = () => {
-        if (this.state.events !== []) {
-            console.log(this.state.events)
-           return this.state.events.map(event => <div>{event.username}: {event.event}</div>)
-        }
     }
 
     handleReady = (e) => {
@@ -136,24 +127,44 @@ export default class Room extends Component {
         return num
     }
 
+    handleLogOut = () =>{
+        this.props.userLogOut()
+        this.props.history.push('/')
+    }
+
     render() {
         return (
             <div>
-                <Layout handleLogOut={this.props.userLogOut} username={this.props.user.username}/>
-                <h1>Room: {this.state.roomName}</h1>
-                <div>current members: 
-                    <ul>
-                    {this.listMembers()}
-                    </ul>
+                <Layout handleLogOut={this.handleLogOut} username={this.props.user.username}/>
+                <div className="container">
+                <div className="card" style={{marginTop: "20px"}}>
+                <div className="card-body">
+                    <div className="row">
+                    <div className="col-7">
+                        <h1>Room: {this.state.roomName}</h1><div class="card">
+                        <div class="card-header">
+                            Submitted Movies
+                        </div>
+                        <div class="card-body">
+                            { this.state.start? null : <DisplayMovies movies={this.state.movies}/>}
+                            { this.state.ready? null : <MovieForm handleMovieSubmit={this.handleMovieSubmit}/>}
+                            <div className="row">
+                                <div className="col-md-4 ml-auto">
+                            <button disabled={this.state.ready} onClick={this.handleReady} class="btn btn-outline-success" type="button" style={{marginRight: "10px"}}>Ready</button>
+                            { this.currentRoom.admin.username === this.props.user.username ? <button disabled={!this.isAllReady() || this.state.start} onClick={this.handleStartSwipe} class="btn btn-outline-success" type="button">Start</button> : null }
+                                </div>
+                            </div>
+                            { this.state.start ? <MovieSwipe movies={this.state.movies} handleVote={this.handleVote} handleDoneVoting={this.handleDoneVoting} numUnDone={this.numUnDone}/> : null}
+                        </div>
+                        </div>
+                    </div>
+                    <div className="col">
+                        <RoomEvents members={this.state.members} events={this.state.events}/>
+                    </div>
+                    </div>
                 </div>
-                <div className="activity-log">
-                    {this.eventHistory()}
                 </div>
-                { this.state.ready? null : <MovieForm handleMovieSubmit={this.handleMovieSubmit}/>}
-                { this.state.start? null : <DisplayMovies movies={this.state.movies}/>}
-                <button disabled={this.state.ready} onClick={this.handleReady}>Ready</button>
-                { this.currentRoom.admin.username === this.props.user.username ? <button disabled={!this.isAllReady() || this.state.start} onClick={this.handleStartSwipe}>Start</button> : null }
-                { this.state.start ? <MovieSwipe movies={this.state.movies} handleVote={this.handleVote} handleDoneVoting={this.handleDoneVoting} numUnDone={this.numUnDone}/> : null}
+                </div>
             </div>
         )
     }

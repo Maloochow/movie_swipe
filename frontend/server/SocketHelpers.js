@@ -2,24 +2,25 @@ module.exports = function(client, clientManager, roomManager) {
     const handleEvent = makeHandleEvent(client, clientManager, roomManager)
 
     function handleRegister(username, callback) {
-        ClientManager.registerClient(client, username)
-        return callback(null, username)
+        let user = clientManager.registerClient(client, username)
+        console.log(clientManager.getAll())
+        return callback(null, user.user.username)
     }
 
     function handleJoin(roomName, callback) {
-        const createEntry = () => ({ event: `joined ${roomName}` })
+        const createEntry = () => ({ event: `joined` })
         handleEvent(roomName, createEntry)
           .then(function (room) {
             // add member to room
-            room.addUser(client)
+            room.addUser(clientManager.getUserByClientId(client.id))
             // send chat history to client
-            callback(null, room.getRoomHistory())
+            callback(null, room.serialize(), room.getRoomHistory())
           })
           .catch(callback)
     }
 
     function handleLeave(roomName, callback) {
-        const createEntry = () => {event: `left ${roomName}`}
+        const createEntry = () => {event: `left`}
         handleEvent(roomName, createEntry)
         .then(function(room) {
             room.removeUser(client.id)
@@ -27,24 +28,61 @@ module.exports = function(client, clientManager, roomManager) {
         })
         .catch(callback)
     }
+
+    function handleReady(roomName, callback) {
+        const createEntry = () => ({event: 'ready'})
+        handleEvent(roomName, createEntry)
+        .then(()=> {
+            callback(null)})
+        .catch(callback)
+    }
+    
     function handleVote(roomName, movieName, callback) {
-        const createEntry = () => {movie: `${movieName}`}
+        const createEntry = () => ({ event: 'vote', movie: `${movieName}` })
         handleEvent(roomName, createEntry)
         .then(()=> callback(null))
         .catch(callback)
     }
+    
+    function handleDoneVoting(roomName, callback) {
+        const createEntry = () => ({ event: 'doneVoting' })
+        handleEvent(roomName, createEntry)
+        .then(()=> callback(null))
+        .catch(callback)
+    }
+    
+    function handleCreateMovie(roomName, movieName, callback) {
+        const createEntry = () => ({ event: 'createMovie', movie: `${movieName}` })
+        handleEvent(roomName, createEntry)
+        .then(()=> {
+            callback(null)})
+            .catch(callback)
+        }
 
+    function handleStartSwipe(roomName, callback) {
+        const createEntry = () => ({event: 'startSwipe'})
+        handleEvent(roomName, createEntry)
+        .then(()=> {
+            callback(null)})
+        .catch(callback)
+    }
+        
     function handleCreateRoom(roomName, callback) {
         let room = roomManager.getRoomByName(roomName)
         if (room) {
             callback("room already exist", room.serialize())
         } else {
             room = roomManager.create(roomName)
+            room.addAdmin(clientManager.getUserByClientId(client.id))
+            // console.log(roomManager.serializeRooms())
+            clientManager.getAll().map(e=> e.client.emit('rooms', room.serialize()))
             callback(null, room.serialize())
         }
     }
     function handleGetRooms(callback) {
-        callback(null, roomManager.serializeRooms())
+        let rooms = roomManager.serializeRooms()
+        console.log(rooms)
+        callback(null, rooms)
     } 
 
     function handleDisconnect() {
@@ -59,7 +97,11 @@ module.exports = function(client, clientManager, roomManager) {
         handleCreateRoom,
         handleGetRooms,
         handleVote,
-        handleDisconnect
+        handleDisconnect,
+        handleCreateMovie,
+        handleReady,
+        handleStartSwipe,
+        handleDoneVoting
     ]
 
 }
@@ -100,9 +142,9 @@ function makeHandleEvent(client, clientManager, roomManager) {
       return ensureValidRoomAndUserSelected(roomName)
         .then(function ({ room, user }) {
           // append event to chat history
-          const entry = { user, ...createEntry() }
+            let username = user.user.username
+          const entry = { username, ...createEntry() }
           room.addEntry(entry)
-  
           // notify other clients in room
           room.broadcastMessage({ room: roomName, ...entry })
           return room

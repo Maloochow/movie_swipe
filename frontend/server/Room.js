@@ -1,9 +1,10 @@
 module.exports = function (name) {
-    const members = new Map()
-    let roomHistory = []
+    members = new Map()
+    roomHistory = []
+    admin = ""
   
     function broadcastMessage(message) {
-      members.forEach(m => m.emit('message', message))
+      members.forEach(m => m.client.emit('message', message))
     }
   
     function addEntry(entry) {
@@ -11,11 +12,16 @@ module.exports = function (name) {
     }
   
     function getRoomHistory() {
-      return roomHistory.slice()
+      return roomHistory.slice(0)
     }
   
-    function addUser(client) {
-      members.set(client.id, client)
+    function addAdmin(user) {
+        addUser(user)
+        admin = user.user
+    }
+
+    function addUser(user) {
+      members.set(user.client.id, user)
     }
   
     function removeUser(client) {
@@ -25,16 +31,19 @@ module.exports = function (name) {
     function serialize() {
       return {
         name,
-        numMembers: members.size
+        numMembers: members.size,
+        members: Array.from(members, ([name, value]) => value.user),
+        admin: admin
       }
     }
   
     return {
-      broadcastMessage,
-      addEntry,
-      getRoomHistory,
-      addUser,
-      removeUser,
-      serialize
+        broadcastMessage,
+        addEntry,
+        getRoomHistory,
+        addUser,
+        removeUser,
+        serialize,
+        addAdmin
     }
   }

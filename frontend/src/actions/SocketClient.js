@@ -6,6 +6,10 @@ export default function() {
     function registerHandler(onMessageReceived) {
         socket.on('message', onMessageReceived)
     }
+
+    function receivedRooms(onRoomsReceived) {
+        socket.on('rooms', onRoomsReceived)
+    }
     
     function unregisterHandler() {
         socket.off('message')
@@ -27,8 +31,24 @@ export default function() {
         socket.emit('leave', roomName, cb)
     }
     
+    function ready(roomName, cb) {
+        socket.emit('ready', roomName, cb)
+    }
+    
+    function startSwipe(roomName, cb) {
+        socket.emit('startSwipe', roomName, cb)
+    }
+    
     function vote(roomName, movieName, cb) {
         socket.emit('vote', roomName, movieName, cb)
+    }
+    
+    function doneVoting(roomName, cb) {
+        socket.emit('doneVoting', roomName, cb)
+    }
+
+    function createMovie(roomName, movieName, cb) {
+        socket.emit('createMovie', roomName, movieName, cb)
     }
     
     function createRoom(roomName, cb) {
@@ -53,6 +73,11 @@ export default function() {
         getRooms,
         getAvailableUsers,
         registerHandler,
-        unregisterHandler
+        receivedRooms,
+        unregisterHandler,
+        createMovie,
+        ready,
+        startSwipe,
+        doneVoting
     }
 }

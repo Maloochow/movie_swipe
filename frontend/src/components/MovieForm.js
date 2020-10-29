@@ -11,11 +11,11 @@ const MovieForm = (props) => {
 
     return (
         <form onSubmit={handleMovieSubmit}>
-            <div class="form-group">
+            <div className="form-group">
             <label for="movie">Enter Movie Title</label>
-            <input type="text" class="form-control" id="movie" onChange={e => setMovie(e.target.value)} value={movie} />
+            <input type="text" className="form-control" id="movie" onChange={e => setMovie(e.target.value)} value={movie} />
             </div>
-            <button type="submit" disabled={movie === ""} class="btn btn-primary">Submit</button>
+            <button type="submit" disabled={movie === ""} className="btn btn-primary">Submit</button>
         </form>
     )
 }

@@ -15,7 +15,7 @@ export default class GetRoom extends Component {
 
         this.props.client.receivedRooms((rooms) => {
             console.log(rooms)
-            this.props.addRooms(rooms)
+            this.props.getRooms(rooms)
         })
     }
         
@@ -50,12 +50,12 @@ export default class GetRoom extends Component {
     }
 
     show = () => {
-        if (this.props.isUsername()) {
+        if (this.props.isRegistered) {
             return (
-                <div class="card" style={{marginTop: "20px"}}>
+                <div className="card" style={{marginTop: "20px"}}>
                     <DisplayRooms rooms={this.props.rooms} handleClick={this.handleJoin}/>
-                    <div class="card-body">
-                    <button type="button" class="btn btn-primary" onClick={this.handleClick}>Create New Room</button>
+                    <div className="card-body">
+                    <button type="button" className="btn btn-primary" onClick={this.handleClick}>Create New Room</button>
                     </div>
                 </div>
             )

@@ -13,17 +13,24 @@ module.exports = function(client, clientManager, roomManager) {
           .then(function (room) {
             // add member to room
             room.addUser(clientManager.getUserByClientId(client.id))
+            //update number of member number to the home page
+            clientManager.getAll().map(e=> e.client.emit('rooms', roomManager.serializeRooms()))
             // send chat history to client
-            callback(null, room.serialize(), room.getRoomHistory())
+            callback(null, room.serialize(), room.roomHistory)
           })
           .catch(callback)
     }
 
     function handleLeave(roomName, callback) {
-        const createEntry = () => {event: `left`}
+        const createEntry = () => ({event: `left`})
         handleEvent(roomName, createEntry)
-        .then(function(room) {
+        .then( (room)=> {
+          if (room.admin.username === clientManager.getUserByClientId(client.id).user.username) {
+            roomManager.destroy(roomName)
+          } else {
             room.removeUser(client.id)
+          }
+            clientManager.getAll().map(e=> e.client.emit('rooms', roomManager.serializeRooms()))
             callback(null)
         })
         .catch(callback)
@@ -75,7 +82,7 @@ module.exports = function(client, clientManager, roomManager) {
             room = roomManager.create(roomName)
             room.addAdmin(clientManager.getUserByClientId(client.id))
             // console.log(roomManager.serializeRooms())
-            clientManager.getAll().map(e=> e.client.emit('rooms', room.serialize()))
+            clientManager.getAll().map(e=> e.client.emit('rooms', roomManager.serializeRooms()))
             callback(null, room.serialize())
         }
     }
@@ -88,6 +95,7 @@ module.exports = function(client, clientManager, roomManager) {
     function handleDisconnect() {
         clientManager.removeClient(client)
         roomManager.removeClient(client)
+        clientManager.getAll().map(e=> e.client.emit('rooms', roomManager.serializeRooms()))
     }
 
     return [

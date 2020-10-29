@@ -1,49 +1,41 @@
-module.exports = function (name) {
-    members = new Map()
-    roomHistory = []
-    admin = ""
-  
-    function broadcastMessage(message) {
-      members.forEach(m => m.client.emit('message', message))
-    }
-  
-    function addEntry(entry) {
-      roomHistory = roomHistory.concat(entry)
-    }
-  
-    function getRoomHistory() {
-      return roomHistory.slice(0)
-    }
-  
-    function addAdmin(user) {
-        addUser(user)
-        admin = user.user
+module.exports = class Room {
+
+    constructor(name) {
+      this.name = name
+      this.members = new Map()
+      this.roomHistory = []
+      this.admin = ""
     }
 
-    function addUser(user) {
-      members.set(user.client.id, user)
+  
+    broadcastMessage(message) {
+      this.members.forEach(m => m.client.emit('message', message))
     }
   
-    function removeUser(client) {
-      members.delete(client.id)
+    addEntry(entry) {
+      this.roomHistory.push(entry)
     }
   
-    function serialize() {
+    addAdmin(user) {
+        this.addUser(user)
+        this.admin = user.user
+    }
+
+    addUser(user) {
+      this.members.set(user.client.id, user)
+    }
+  
+    removeUser(client) {
+      console.log(this.members.delete(client))
+      console.log(this.members.has(client))
+    }
+  
+    serialize() {
       return {
-        name,
-        numMembers: members.size,
-        members: Array.from(members, ([name, value]) => value.user),
-        admin: admin
+        name: this.name,
+        numMembers: this.members.size,
+        members: Array.from(this.members, ([name, value]) => value.user),
+        admin: this.admin
       }
-    }
-  
-    return {
-        broadcastMessage,
-        addEntry,
-        getRoomHistory,
-        addUser,
-        removeUser,
-        serialize,
-        addAdmin
     }
   }

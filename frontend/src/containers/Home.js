@@ -12,6 +12,7 @@ const Home = (props) => {
 
     const [ loading, setLoading ] = useState(props.user.loading)
     const [ username, setUsername ] = useState(props.user.username)
+    const [ isRegistered, setIsRegistered ] = useState(false)
     const [ client ] = useState(props.client)
     const [history] = useState(props.history)
 
@@ -19,27 +20,52 @@ const Home = (props) => {
         console.log(props)
         setUsername(props.user.username)
         setLoading(props.user.loading)
+        if (username === "") {
+            setIsRegistered(false)
+        }
     }, [props.user.username ])
 
     const isUsername = () => {
         if (username === "") {
             return false
         } else {
-            client.register(username, (err, user) => {
-                console.log(`errors: ${err}`)
-                console.log(user)
-            })
-            return true
+            if (isRegistered) {
+                return true
+            } else {
+                handleRegister()
+                return true
+            } 
+        }
+    }
+    
+    const handleRegister = () => {
+        client.register(username, (err, user) => {
+            setIsRegistered(true)
+            console.log(`errors: ${err}`)
+            console.log(user)
+        })
+    }
+
+    const displayLogin = () => {
+        if (isUsername()) {
+            return (
+                <div><Layout handleLogOut={props.userLogOut} username={username}/></div> 
+            )
+        } else {
+            return (
+            <div className="container">
+                <Login {...props}/>
+            </div>
+            )
         }
     }
 
     return (
         <div>
-            { isUsername() ? <div><Layout handleLogOut={props.userLogOut} username={username}/></div> : null}
+            { displayLogin() }
             <div className="container">
             { loading ? <Loading /> : null}
-            { isUsername() ? null : <Login {...props}/> }
-            <GetRoom client={client} history={history} rooms={props.room.rooms} addRooms={props.addRooms} getRooms={props.getRooms} addRoomHistory={props.addRoomHistory} addEvents={props.addEvents} isUsername={isUsername}/>
+            <GetRoom client={client} history={history} rooms={props.room.rooms} addRooms={props.addRooms} getRooms={props.getRooms} addRoomHistory={props.addRoomHistory} addEvents={props.addEvents} isRegistered={isRegistered}/>
             </div>
         </div>
     )

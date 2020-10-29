@@ -31,7 +31,10 @@ io.on('connection', client => {
   
   client.on('join', handleJoin)
   
-  client.on('leave', handleLeave)
+  client.on('leave', (a,b) => {
+    console.log("going to enter handle leave")
+    handleLeave(a,b)
+  })
   
   client.on('vote', handleVote)
   

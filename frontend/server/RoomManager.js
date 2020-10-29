@@ -4,7 +4,7 @@ module.exports = function(currentConnection) {
     currentConnection.rooms = new Map()
 
     function create(roomName) {
-        currentConnection.rooms.set(roomName, Room(roomName))
+        currentConnection.rooms.set(roomName, new Room(roomName))
         return currentConnection.rooms.get(roomName)
     }
     
@@ -21,7 +21,14 @@ module.exports = function(currentConnection) {
     }
 
     function removeClient(client) {
-        currentConnection.rooms.forEach(room => room.removeUser(client))
+        currentConnection.rooms.forEach(room => {
+            if ( room.members.get(client.id) && room.members.get(client.id).user.username === room.admin.username) {
+                currentConnection.rooms.delete(room.name)
+            } else {
+                room.removeUser(client.id)
+            }
+        })
+            
     }
 
     return {

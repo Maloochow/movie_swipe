@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import DisplayMovie from './DisplayMovie'
 
 const DisplayMovies = ({movies}) => {
+
+
     const displayMovies = () => {
-    return movies.map((movie, index) => <li className="list-group-item" key={index}>{movie.title}</li>)
+    return movies.map((movie, index) => <DisplayMovie movie={movie}/>)
     }
 
     return(

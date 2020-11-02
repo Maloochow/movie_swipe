@@ -1,3 +1,4 @@
+
 require 'pry'
 
 class SessionsController < ApplicationController
@@ -33,15 +34,14 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        session.clear
-        cookies.delete :_session_id
+        session.destroy
+
         if !logged_in?
             render json: {
                 status: 200,
                 logged_out: true
             }
         else
-            binding.pry
             render json: {
             status: 200,
             logged_out: false

@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     def index
         @users = User.all
         if @users
-            render json: @users
+            render json: @users, only: [:username, :email]
         else
             render json: {
                 status: 500,
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     def show
         @user = User.find(params[:id])
         if @user
-            render json: @user
+            render json: @user, only: [:username, :email]
         else
             render json: {
                 status: 500,
@@ -31,8 +31,11 @@ class UsersController < ApplicationController
             login!
             render json: {
                 logged_in: true,
-                user: @user
-            }
+                user: {
+                    username: @user.username,
+                    email: @user.email
+                }
+            }.to_json
         else
             render json: {
                 status: 500,

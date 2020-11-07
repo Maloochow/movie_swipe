@@ -8,8 +8,11 @@ class SessionsController < ApplicationController
             login!
             render json: {
                 logged_in: true,
-                user: @user
-            }
+                user: {
+                    username: @user.username,
+                    email: @user.email
+                }
+            }.to_json
         else
             render json: {
                 status: 401,
@@ -23,7 +26,10 @@ class SessionsController < ApplicationController
         if logged_in? && current_user
             render json: {
                 logged_in: true,
-                user: current_user
+                user: {
+                    username: current_user.username,
+                    email: current_user.email
+                }
             }
         else
             render json: {

@@ -99,7 +99,7 @@ const LoginForm = (props) => {
     }
     
     return(
-        <form onSubmit={handleSubmit} className="needs-validation">
+        <form onSubmit={handleSubmit} className="needs-validation" id="loginForm">
             {showErrors()}
             <div>{props.errors ? props.errors : null}</div>
             {onSignUp()}

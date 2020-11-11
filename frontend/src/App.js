@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { isLoggedIn, userLogin, userLogOut, userSignUp } from './actions/userActions'
 import { addRooms, getRooms, addEvents } from "./actions/roomActions";
 import Home from "./containers/Home";
-import Login from "./containers/Login";
 import SignUp from "./containers/SignUp";
 import Room from "./containers/Room";
 import socket from './actions/SocketClient'
+import Layout from './components/Layout';
 
 const client = socket()
 
@@ -20,6 +20,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Layout handleLogOut={this.props.userLogOut} username={this.props.user.username}/>
         <Router>
           <Switch>
             <Route exact path='/' render={props => <Home {...props} client={client} {...this.props}/> } />

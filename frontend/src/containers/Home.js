@@ -22,21 +22,10 @@ const Home = (props) => {
         setLoading(props.user.loading)
         if (username === "") {
             setIsRegistered(false)
+        } else if (username !== "" && !isRegistered) {
+            handleRegister()
         }
     }, [props.user.username ])
-
-    const isUsername = () => {
-        if (username === "") {
-            return false
-        } else {
-            if (isRegistered) {
-                return true
-            } else {
-                handleRegister()
-                return true
-            } 
-        }
-    }
     
     const handleRegister = () => {
         client.register(username, (err, user) => {
@@ -46,24 +35,10 @@ const Home = (props) => {
         })
     }
 
-    const displayLogin = () => {
-        if (isUsername()) {
-            return (
-                <div><Layout handleLogOut={props.userLogOut} username={username}/></div> 
-            )
-        } else {
-            return (
-            <div className="container">
-                <Login {...props}/>
-            </div>
-            )
-        }
-    }
-
     return (
         <div>
-            { displayLogin() }
             <div className="container">
+            <Login {...props} notRegistered={username === ""}/>
             { loading ? <Loading /> : null}
             <GetRoom client={client} history={history} rooms={props.room.rooms} addRooms={props.addRooms} getRooms={props.getRooms} addRoomHistory={props.addRoomHistory} addEvents={props.addEvents} isRegistered={isRegistered}/>
             </div>

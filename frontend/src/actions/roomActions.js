@@ -1,5 +1,5 @@
 export const addRoomHistory = (roomSerialized) => {
-    return {type: 'ADD_HISTORY', history: roomSerialized}
+    return {type: 'ENTER_ROOM', room: roomSerialized}
 }
 
 export const addRooms = (rooms) => {

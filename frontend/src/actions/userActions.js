@@ -11,7 +11,7 @@ const rootURL = 'http://localhost:8080/'
 export const userLogin = (user) => {
     return (dispatch) => {
         dispatch({type: 'USER_LOAD'})
-        axios.post(rootURL + 'login', user, {withCredentials: true})
+        axios.post(rootURL + 'login', user )
             .then(response => {
                 console.log(response)
                 if (response.data.logged_in) {
@@ -27,7 +27,7 @@ export const userLogin = (user) => {
 export const userSignUp = (user) => {
     return (dispatch) => {
         dispatch({type: 'USER_LOAD'})
-        axios.post(rootURL + 'users', user, {withCredentials: true})
+        axios.post(rootURL + 'users', user )
         .then(response => {
             console.log(response)
             if (response.data.logged_in) {
@@ -44,7 +44,7 @@ export const userSignUp = (user) => {
 export const userLogOut = () => {
     return (dispatch) => {
         dispatch({type: 'USER_LOAD'})
-        axios.post(rootURL + 'logout', {withCredentials: true})
+        axios.post(rootURL + 'logout' )
             .then(response => {
                 console.log(response)
                 if (response.data.logged_out) {
@@ -58,7 +58,7 @@ export const userLogOut = () => {
 export const isLoggedIn = () => {
     return (dispatch) => {
         dispatch({type: 'USER_LOAD'})
-        axios.get(rootURL + 'logged_in', {withCredentials: true})
+        axios.get(rootURL + 'logged_in' )
             .then(response => {
                 console.log(response.data)
                 if (response.data.logged_in) {

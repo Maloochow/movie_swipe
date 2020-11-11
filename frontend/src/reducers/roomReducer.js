@@ -1,9 +1,11 @@
-export default function roomReducer( state= {currentRoom: {}, pastEvents: [], rooms: []}, action) {
+export const initialState = {currentRoom: {}, pastEvents: [], rooms: []}
+
+export function roomReducer( state= initialState, action) {
     switch (action.type) {
-        case 'ADD_HISTORY':
+        case 'ENTER_ROOM':
             return {
                 ...state,
-                currentRoom: action.history,
+                currentRoom: action.room,
                 pastEvents: state.pastEvents,
                 rooms: state.rooms
             }

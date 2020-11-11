@@ -1,4 +1,6 @@
-function userReducer(state = {username: "", email: "", loading: false, errors: []}, action) {
+export const initialState = {username: "", email: "", loading: false, errors: []}
+
+export function userReducer(state = initialState, action) {
     switch (action.type) {
         case "USER_LOGIN":
             return {...state, username: action.user.username, email: action.user.email, loading: false, errors: []}
@@ -17,5 +19,3 @@ function userReducer(state = {username: "", email: "", loading: false, errors: [
             break;
     }
 }
-
-export default userReducer

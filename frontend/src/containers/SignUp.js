@@ -19,7 +19,6 @@ export default class SignUp extends Component {
         return (
             <div class="container" >
                 <div style={{height: "100vh", backgroundImage: "url(https://deepestdream.com/wp-content/uploads/2018/08/HaroldAndMaude1.jpg)"}} >
-                    <LoginNav signup={true}/>
                     <div class="nav justify-content-center">
                     <div class="card" style={{width: '40%', alignItems: 'center', justifyContent: 'center'}}>
                     <div class="card-body">

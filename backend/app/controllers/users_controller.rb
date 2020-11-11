@@ -2,9 +2,9 @@ require 'pry'
 
 class UsersController < ApplicationController
     def index
-        @users = User.all
+        @users = User.list
         if @users
-            render json: @users, only: [:username, :email]
+            render json: @users
         else
             render json: {
                 status: 500,

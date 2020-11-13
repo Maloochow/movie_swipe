@@ -7,30 +7,20 @@ Real-time vote application that finds common ground of your group’s movie pref
 3. Designed user experience with Bootstrap’s responsive styling and various browser events
 4. Complemented with full suite integration testing and unit testing on separate dev environment
 
-## Instruction -- `frontend`
+## Instruction
 
-In the `frontend` directory, you can run:
+### `frontend`
 
-### `yarn start`
+In the `frontend` directory, you can:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Run `yarn start` to run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### `yarn run server`
+- Run `yarn run server` to start the server side in the development mode ([http://localhost:3001](http://localhost:3001)). It is written in Node.js and supports the real-time communication between different clients.
 
-Runs the server side in the development mode ([http://localhost:3001](http://localhost:3001)). It is written in Node.js and supports the real-time communication between different clients.<br />
+- Run `yarn test` to launch the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-## Instruction -- `backend`
+### `backend`
 
 In the `backend` directory, you can run:
 
-### `rails s`
-
-Runs the Rails API in the development mode.<br />
-Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
-This API supports the user authentication of the app.
+- Run `rails s` to start the Rails API in the development mode. Open [http://localhost:8080](http://localhost:8080) to view it in the browser. This API supports the user authentication of the app.
